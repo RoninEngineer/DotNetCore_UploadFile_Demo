@@ -9,6 +9,7 @@ namespace DotNetCore_UploadFile_Demo.Engine
     public interface IImportEngine
     {
         bool IsMultipartContent(HttpRequest request);
-        int ProcessFile(string filePath);
+        Task<int> ProcessFile(string filePath);
+        Task<string> ValidateRequest(HttpRequest request);
     }
 }
