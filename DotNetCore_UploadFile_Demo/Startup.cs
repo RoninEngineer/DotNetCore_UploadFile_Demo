@@ -1,4 +1,5 @@
-﻿using DotNetCore_UploadFile_Demo.Engine;
+﻿using DotNetCore_UploadFile_Demo.Data;
+using DotNetCore_UploadFile_Demo.Engine;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@ namespace DotNetCore_UploadFile_Demo
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddScoped<IImportEngine, ImportEngine>();
+            services.AddScoped<IImportDataResource, ImportDataResource>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
