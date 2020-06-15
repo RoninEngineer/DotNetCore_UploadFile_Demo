@@ -1,15 +1,23 @@
 ﻿using DotNetCore_UploadFile_Demo.Attributes;
+using DotNetCore_UploadFile_Demo.Data;
 using DotNetCore_UploadFile_Demo.Models;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace DotNetCore_UploadFile_Demo.Engine
 {
     public class ImportEngine : IImportEngine
     {
+        private IImportDataResource _importDataResource;
+
+        public ImportEngine(IImportDataResource importDataResource)
+        {
+            _importDataResource = importDataResource;
+        }
         public bool IsMultipartContent(HttpRequest request)
         {
             try
@@ -29,12 +37,12 @@ namespace DotNetCore_UploadFile_Demo.Engine
             }
         }
 
-        public int ProcessFile(string filePath)
+        public async Task<int> ProcessFile(string filePath)
         {
             try
             {
                 List<ProductImport> productImportList = new List<ProductImport>();
-                string[] formData = System.IO.File.ReadAllLines(filePath);
+                string[] formData = await File.ReadAllLinesAsync(filePath);
 
                 var queryDataItem = from line in formData.Skip(1)
                                     select line;
@@ -52,7 +60,7 @@ namespace DotNetCore_UploadFile_Demo.Engine
 
                     });
                 }
-                System.IO.File.Delete(filePath);
+                File.Delete(filePath);
                 if(productImportList.Any())
                 {
                     return productImportList.Count();
@@ -69,6 +77,12 @@ namespace DotNetCore_UploadFile_Demo.Engine
                 throw;
             }
            
+        }
+
+        public async Task<string> ValidateRequest(HttpRequest request)
+        {
+            var  requestDataFile = await _importDataResource.ValidateImportRequestData(request);
+            return requestDataFile;
         }
     }
 }
