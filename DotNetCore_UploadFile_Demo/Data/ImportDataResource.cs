@@ -15,7 +15,6 @@ namespace DotNetCore_UploadFile_Demo.Data
     {
         public async Task<string> ValidateImportRequestData(HttpRequest request)
         {
-            string importDataFilePath = null;
             FormOptions _defaultFormOptions = new FormOptions();
             var accumulator = new KeyValueAccumulator();
             string filePath = Path.GetTempFileName();
@@ -64,7 +63,7 @@ namespace DotNetCore_UploadFile_Demo.Data
                 }
                 section = await reader.ReadNextSectionAsync();
             }
-            return importDataFilePath;
+            return filePath;
         }
 
         private static Encoding GetEncoding(MultipartSection section)
