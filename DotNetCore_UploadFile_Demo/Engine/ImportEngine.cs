@@ -54,14 +54,14 @@ namespace DotNetCore_UploadFile_Demo.Engine
                     productImportList.Add(new ProductImport
                     {
                         ProductId = int.TryParse(productData[0], out int validProductId) ? validProductId : 0,
-                        ProductName = String.IsNullOrWhiteSpace(productData[1]) ? productData[1] : null,
-                        ProductDescription = String.IsNullOrWhiteSpace(productData[2]) ? productData[2] : null,
-                        ProductSKU = String.IsNullOrWhiteSpace(productData[3]) ? productData[3] : null
+                        ProductName = !String.IsNullOrWhiteSpace((string)productData.GetValue(1)) ? (string)productData.GetValue(1) : null,
+                        ProductDescription = !String.IsNullOrWhiteSpace((string)productData.GetValue(2)) ? (string)productData.GetValue(2) : null,
+                        ProductSKU = !String.IsNullOrWhiteSpace((string)productData.GetValue(3)) ? (string)productData.GetValue(3) : null
 
                     });
                 }
                 File.Delete(filePath);
-                if(productImportList.Any())
+                if (productImportList.Any())
                 {
                     return productImportList.Count();
                 }
@@ -69,19 +69,19 @@ namespace DotNetCore_UploadFile_Demo.Engine
                 {
                     return 0;
                 }
-                
+
             }
             catch (Exception)
             {
 
                 throw;
             }
-           
+
         }
 
         public async Task<string> ValidateRequest(HttpRequest request)
         {
-            var  requestDataFile = await _importDataResource.ValidateImportRequestData(request);
+            var requestDataFile = await _importDataResource.ValidateImportRequestData(request);
             return requestDataFile;
         }
     }

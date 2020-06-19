@@ -1,16 +1,13 @@
 ﻿using DotNetCore_UploadFile_Demo.Attributes;
 using DotNetCore_UploadFile_Demo.Engine;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 
 using System;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DotNetCore_UploadFile_Demo.Controllers
 {
-    [Route("api/import")]
+    [Route("api/[controller]")]
 
     public class ImportController : Controller
     {
@@ -37,7 +34,7 @@ namespace DotNetCore_UploadFile_Demo.Controllers
                 {
                     return BadRequest($"Unable to validate data in request");
                 }
-                var processedCount = engine.ProcessFile(filePath);
+                var processedCount = await engine.ProcessFile(filePath);
 
                 return Ok($"Processed {processedCount} rows from Product Data Import file");
             }
